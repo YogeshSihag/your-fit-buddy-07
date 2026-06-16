@@ -58,9 +58,10 @@ Score generously but honestly. If no person is visible, return score 0 and expla
 
     if (!res.ok) {
       const txt = await res.text();
+      console.error("[AI] Unexpected error", res.status, txt);
       if (res.status === 429) throw new Error("Rate limited. Try again in a moment.");
       if (res.status === 402) throw new Error("AI credits exhausted. Add credits to continue.");
-      throw new Error(`AI error: ${txt.slice(0, 200)}`);
+      throw new Error("AI analysis failed. Please try again later.");
     }
 
     const json = await res.json();
