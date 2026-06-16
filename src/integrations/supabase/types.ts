@@ -14,7 +14,105 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      form_scores: {
+        Row: {
+          created_at: string
+          exercise_name: string
+          feedback: string | null
+          id: string
+          score: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          exercise_name: string
+          feedback?: string | null
+          id?: string
+          score: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          exercise_name?: string
+          feedback?: string | null
+          id?: string
+          score?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          age: number | null
+          created_at: string
+          fitness_goal: string | null
+          fitness_level: string
+          height_cm: number | null
+          id: string
+          name: string | null
+          updated_at: string
+          weight_kg: number | null
+        }
+        Insert: {
+          age?: number | null
+          created_at?: string
+          fitness_goal?: string | null
+          fitness_level?: string
+          height_cm?: number | null
+          id: string
+          name?: string | null
+          updated_at?: string
+          weight_kg?: number | null
+        }
+        Update: {
+          age?: number | null
+          created_at?: string
+          fitness_goal?: string | null
+          fitness_level?: string
+          height_cm?: number | null
+          id?: string
+          name?: string | null
+          updated_at?: string
+          weight_kg?: number | null
+        }
+        Relationships: []
+      }
+      workouts: {
+        Row: {
+          created_at: string
+          duration_min: number | null
+          exercise_name: string
+          id: string
+          muscle_group: string
+          notes: string | null
+          reps: number | null
+          sets: number | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          duration_min?: number | null
+          exercise_name: string
+          id?: string
+          muscle_group: string
+          notes?: string | null
+          reps?: number | null
+          sets?: number | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          duration_min?: number | null
+          exercise_name?: string
+          id?: string
+          muscle_group?: string
+          notes?: string | null
+          reps?: number | null
+          sets?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
