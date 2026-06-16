@@ -35,8 +35,10 @@ function WorkoutsPage() {
       sets: ex.sets,
       reps: repsNum,
     });
-    if (error) toast.error(error.message);
-    else {
+    if (error) {
+      console.error("Workout insert error:", error);
+      toast.error("Failed to log workout. Please try again.");
+    } else {
       toast.success(`Logged ${ex.name}`);
       qc.invalidateQueries({ queryKey: ["workouts-all"] });
       qc.invalidateQueries({ queryKey: ["workouts-recent"] });
