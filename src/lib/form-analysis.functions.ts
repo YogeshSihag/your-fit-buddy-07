@@ -1,9 +1,17 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
+import { EXERCISES } from "@/lib/exercises";
+
+const VALID_EXERCISE_NAMES = new Set(
+  Object.values(EXERCISES).flat().map((e) => e.name),
+);
 
 const Input = z.object({
-  exerciseName: z.string().min(1).max(100),
+  exerciseName: z.string().min(1).max(100).refine(
+    (n) => VALID_EXERCISE_NAMES.has(n),
+    { message: "Invalid exercise name" },
+  ),
   imageDataUrl: z.string().startsWith("data:image/"),
 });
 
