@@ -1,9 +1,17 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
+import { EXERCISES } from "@/lib/exercises";
+
+const VALID_EXERCISE_NAMES = new Set(
+  Object.values(EXERCISES).flat().map((e) => e.name),
+);
 
 const Input = z.object({
-  exerciseName: z.string().min(1).max(100),
+  exerciseName: z.string().min(1).max(100).refine(
+    (n) => VALID_EXERCISE_NAMES.has(n),
+    { message: "Invalid exercise name" },
+  ),
   imageDataUrl: z.string().startsWith("data:image/"),
 });
 
@@ -50,9 +58,10 @@ Score generously but honestly. If no person is visible, return score 0 and expla
 
     if (!res.ok) {
       const txt = await res.text();
+      console.error("[AI] Unexpected error", res.status, txt);
       if (res.status === 429) throw new Error("Rate limited. Try again in a moment.");
       if (res.status === 402) throw new Error("AI credits exhausted. Add credits to continue.");
-      throw new Error(`AI error: ${txt.slice(0, 200)}`);
+      throw new Error("AI analysis failed. Please try again later.");
     }
 
     const json = await res.json();
