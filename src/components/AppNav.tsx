@@ -1,12 +1,13 @@
 import { Link, useRouter } from "@tanstack/react-router";
-import { Dumbbell, LayoutDashboard, Activity, Camera, LineChart, LogOut } from "lucide-react";
+import { Dumbbell, LayoutDashboard, Activity, Camera, LineChart, BarChart3, LogOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 
 const links = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/workouts", label: "Workouts", icon: Activity },
-  { to: "/analyze", label: "Form Coach", icon: Camera },
+  { to: "/analyze", label: "Coach", icon: Camera },
+  { to: "/analytics", label: "Analytics", icon: BarChart3 },
   { to: "/progress", label: "Progress", icon: LineChart },
 ];
 
