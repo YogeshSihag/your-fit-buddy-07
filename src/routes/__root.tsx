@@ -95,6 +95,28 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: appCss,
       },
     ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "Your Fitness Friend",
+          url: "https://your-fit-buddy-07.lovable.app",
+          description:
+            "AI fitness coach that analyzes workout form through your camera, recommends exercises, and tracks progress.",
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "Your Fitness Friend",
+          url: "https://your-fit-buddy-07.lovable.app",
+        }),
+      },
+    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,

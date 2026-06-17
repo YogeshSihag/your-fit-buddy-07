@@ -5,7 +5,21 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianG
 import { computeFitnessLevel, LEVEL_LABEL } from "@/lib/fitness-level";
 
 export const Route = createFileRoute("/_authenticated/progress")({
-  head: () => ({ meta: [{ title: "Progress — Your Fitness Friend" }] }),
+  head: () => ({
+    meta: [
+      { title: "Progress — Your Fitness Friend" },
+      {
+        name: "description",
+        content:
+          "Track your form score trends, total workouts, and fitness level progression over time with detailed charts.",
+      },
+      { property: "og:title", content: "Progress — Your Fitness Friend" },
+      { property: "og:description", content: "Form score trends, workout history, and fitness level progression." },
+      { property: "og:url", content: "https://your-fit-buddy-07.lovable.app/progress" },
+      { name: "robots", content: "noindex" },
+    ],
+    links: [{ rel: "canonical", href: "https://your-fit-buddy-07.lovable.app/progress" }],
+  }),
   component: ProgressPage,
 });
 

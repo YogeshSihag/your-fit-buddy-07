@@ -5,3 +5,6 @@ Disallow: /dashboard
 Disallow: /workouts
 Disallow: /analyze
 Disallow: /progress
+Disallow: /analytics
+
+Sitemap: https://your-fit-buddy-07.lovable.app/sitemap.xml

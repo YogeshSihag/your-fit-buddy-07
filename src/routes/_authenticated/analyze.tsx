@@ -28,7 +28,37 @@ import {
 } from "@/lib/camera";
 
 export const Route = createFileRoute("/_authenticated/analyze")({
-  head: () => ({ meta: [{ title: "Form Coach — Your Fitness Friend" }] }),
+  head: () => ({
+    meta: [
+      { title: "AI Form Coach — Your Fitness Friend" },
+      {
+        name: "description",
+        content:
+          "Turn on your camera and get real-time AI form analysis, corrective cues, and a 0–100 form score for every exercise.",
+      },
+      { property: "og:title", content: "AI Form Coach — Your Fitness Friend" },
+      { property: "og:description", content: "Real-time camera-based form analysis with corrective cues for every set." },
+      { property: "og:url", content: "https://your-fit-buddy-07.lovable.app/analyze" },
+      { name: "robots", content: "noindex" },
+    ],
+    links: [{ rel: "canonical", href: "https://your-fit-buddy-07.lovable.app/analyze" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          name: "Your Fitness Friend — AI Form Coach",
+          applicationCategory: "HealthApplication",
+          operatingSystem: "Web",
+          url: "https://your-fit-buddy-07.lovable.app/analyze",
+          description:
+            "AI-powered form analysis tool that grades exercise technique in real time using your device camera.",
+          offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+        }),
+      },
+    ],
+  }),
   component: AnalyzePage,
 });
 
@@ -209,8 +239,9 @@ function AnalyzePage() {
 
       <div className="grid gap-4 md:grid-cols-2">
         <div>
-          <label className="mb-1 block text-xs uppercase tracking-widest text-muted-foreground">Muscle Group</label>
+          <label htmlFor="muscle-group" className="mb-1 block text-xs uppercase tracking-widest text-muted-foreground">Muscle Group</label>
           <select
+            id="muscle-group"
             value={muscle}
             onChange={(e) => setMuscle(e.target.value as MuscleGroup)}
             disabled={streaming}
@@ -220,8 +251,9 @@ function AnalyzePage() {
           </select>
         </div>
         <div>
-          <label className="mb-1 block text-xs uppercase tracking-widest text-muted-foreground">Exercise</label>
+          <label htmlFor="exercise" className="mb-1 block text-xs uppercase tracking-widest text-muted-foreground">Exercise</label>
           <select
+            id="exercise"
             value={exercise}
             onChange={(e) => setExercise(e.target.value)}
             disabled={streaming}

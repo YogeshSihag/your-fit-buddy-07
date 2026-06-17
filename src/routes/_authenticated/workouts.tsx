@@ -7,7 +7,21 @@ import { toast } from "sonner";
 import { Plus } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/workouts")({
-  head: () => ({ meta: [{ title: "Workouts — Your Fitness Friend" }] }),
+  head: () => ({
+    meta: [
+      { title: "Workouts — Your Fitness Friend" },
+      {
+        name: "description",
+        content:
+          "Log sets, reps, and weight across 150+ exercises. Build your workout history and fuel your progress analytics.",
+      },
+      { property: "og:title", content: "Workouts — Your Fitness Friend" },
+      { property: "og:description", content: "Log sets, reps and weight for 150+ exercises and build your training history." },
+      { property: "og:url", content: "https://your-fit-buddy-07.lovable.app/workouts" },
+      { name: "robots", content: "noindex" },
+    ],
+    links: [{ rel: "canonical", href: "https://your-fit-buddy-07.lovable.app/workouts" }],
+  }),
   component: WorkoutsPage,
 });
 

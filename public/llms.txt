@@ -1,0 +1,11 @@
+# Your Fitness Friend
+
+> AI fitness coach that analyzes workout form through your camera, recommends exercises by muscle group, and tracks your progress over time.
+
+Your Fitness Friend is a web app that helps people train smarter. The AI Form Coach uses your device camera to grade exercise technique in real time with a 0–100 form score and corrective cues. The app includes a library of 150+ exercises across 12 muscle groups, workout logging with sets/reps/weight, and analytics like muscle heatmaps, training volume, streaks, and recovery scoring.
+
+## Pages
+
+- [Home](/): Product overview, features, and how AI form analysis works.
+- [Exercise Library](/exercises): Browse 150+ exercises with instructions, common mistakes, and form tips.
+- [Sign In](/auth): Create an account or sign in with email or Google.

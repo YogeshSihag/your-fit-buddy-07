@@ -28,7 +28,21 @@ import {
 import { Activity, Flame, Heart, Timer, TrendingUp, Trophy, AlertTriangle } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/analytics")({
-  head: () => ({ meta: [{ title: "Analytics — Your Fitness Friend" }] }),
+  head: () => ({
+    meta: [
+      { title: "Analytics — Your Fitness Friend" },
+      {
+        name: "description",
+        content:
+          "Muscle heatmap, training volume, calorie estimates, recovery score, and weekly trends for your workouts.",
+      },
+      { property: "og:title", content: "Analytics — Your Fitness Friend" },
+      { property: "og:description", content: "Muscle heatmap, training volume, calories and recovery insights." },
+      { property: "og:url", content: "https://your-fit-buddy-07.lovable.app/analytics" },
+      { name: "robots", content: "noindex" },
+    ],
+    links: [{ rel: "canonical", href: "https://your-fit-buddy-07.lovable.app/analytics" }],
+  }),
   component: AnalyticsPage,
 });
 
