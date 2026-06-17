@@ -10,7 +10,21 @@ import { currentStreak, dailyActivity, weeklyConsistency, type WorkoutRow } from
 import { useMemo } from "react";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
-  head: () => ({ meta: [{ title: "Dashboard — Your Fitness Friend" }] }),
+  head: () => ({
+    meta: [
+      { title: "Training Dashboard — Your Fitness Friend" },
+      {
+        name: "description",
+        content:
+          "Your personal training dashboard: fitness level, latest form score, workout streak, weekly progress, and recommended exercises.",
+      },
+      { property: "og:title", content: "Training Dashboard — Your Fitness Friend" },
+      { property: "og:description", content: "See your streak, form score, weekly progress and today's workout." },
+      { property: "og:url", content: "https://your-fit-buddy-07.lovable.app/dashboard" },
+      { name: "robots", content: "noindex" },
+    ],
+    links: [{ rel: "canonical", href: "https://your-fit-buddy-07.lovable.app/dashboard" }],
+  }),
   component: Dashboard,
 });
 
@@ -67,8 +81,10 @@ function Dashboard() {
       {/* Greeting */}
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="text-sm text-muted-foreground">{greeting()}, welcome back</p>
-          <h1 className="mt-1 text-3xl font-bold tracking-tight md:text-4xl">{firstName}</h1>
+          <h1 className="text-3xl font-bold tracking-tight md:text-4xl">Training Dashboard</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {greeting()}, {firstName} — here's where you stand today.
+          </p>
         </div>
         <span className="rounded-full border border-neon/30 bg-neon/10 px-3 py-1 text-xs font-medium text-neon">
           {LEVEL_LABEL[level]}
