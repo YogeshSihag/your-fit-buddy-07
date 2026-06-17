@@ -142,7 +142,7 @@ Rules:
       exercise_name: data.exerciseName,
       score: parsed.score,
       indicator: parsed.indicator,
-      mistakes: parsed.mistakes as unknown as Record<string, unknown>[],
+      mistakes: JSON.parse(JSON.stringify(parsed.mistakes)),
       feedback: parsed.feedback + (parsed.tips.length ? " | Tips: " + parsed.tips.join("; ") : ""),
     });
 
