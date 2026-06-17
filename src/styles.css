@@ -1,6 +1,7 @@
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
+@import "@fontsource-variable/inter";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -30,48 +31,48 @@
   --color-ring: var(--ring);
   --color-neon: var(--neon);
   --color-neon-glow: var(--neon-glow);
-  --font-display: "Bebas Neue", "Impact", sans-serif;
-  --font-sans: "Inter", system-ui, sans-serif;
+  --font-display: "Inter Variable", "Inter", system-ui, sans-serif;
+  --font-sans: "Inter Variable", "Inter", system-ui, sans-serif;
 }
 
 :root {
-  --radius: 0.75rem;
-  /* Dark gym aesthetic */
-  --background: oklch(0.16 0.005 240);
-  --foreground: oklch(0.96 0.005 240);
-  --card: oklch(0.21 0.006 240);
-  --card-foreground: oklch(0.96 0.005 240);
-  --popover: oklch(0.21 0.006 240);
-  --popover-foreground: oklch(0.96 0.005 240);
-  /* Neon green primary */
-  --primary: oklch(0.86 0.22 140);
-  --primary-foreground: oklch(0.16 0.005 240);
-  --secondary: oklch(0.26 0.006 240);
-  --secondary-foreground: oklch(0.96 0.005 240);
-  --muted: oklch(0.24 0.006 240);
-  --muted-foreground: oklch(0.68 0.01 240);
-  --accent: oklch(0.86 0.22 140);
-  --accent-foreground: oklch(0.16 0.005 240);
+  --radius: 0.875rem;
+  /* Deep, premium dark surfaces */
+  --background: oklch(0.155 0.005 240);
+  --foreground: oklch(0.97 0.005 240);
+  --card: oklch(0.20 0.006 240);
+  --card-foreground: oklch(0.97 0.005 240);
+  --popover: oklch(0.20 0.006 240);
+  --popover-foreground: oklch(0.97 0.005 240);
+  /* Refined neon green — slightly softer */
+  --primary: oklch(0.85 0.20 142);
+  --primary-foreground: oklch(0.14 0.005 240);
+  --secondary: oklch(0.24 0.006 240);
+  --secondary-foreground: oklch(0.97 0.005 240);
+  --muted: oklch(0.22 0.006 240);
+  --muted-foreground: oklch(0.66 0.012 240);
+  --accent: oklch(0.85 0.20 142);
+  --accent-foreground: oklch(0.14 0.005 240);
   --destructive: oklch(0.62 0.22 25);
   --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(0.28 0.006 240);
-  --input: oklch(0.26 0.006 240);
-  --ring: oklch(0.86 0.22 140);
-  --neon: oklch(0.86 0.22 140);
-  --neon-glow: oklch(0.86 0.22 140 / 0.45);
-  --sidebar: oklch(0.18 0.006 240);
-  --sidebar-foreground: oklch(0.96 0.005 240);
-  --sidebar-primary: oklch(0.86 0.22 140);
-  --sidebar-primary-foreground: oklch(0.16 0.005 240);
-  --sidebar-accent: oklch(0.26 0.006 240);
-  --sidebar-accent-foreground: oklch(0.96 0.005 240);
-  --sidebar-border: oklch(0.28 0.006 240);
-  --sidebar-ring: oklch(0.86 0.22 140);
+  --border: oklch(0.26 0.006 240);
+  --input: oklch(0.24 0.006 240);
+  --ring: oklch(0.85 0.20 142);
+  --neon: oklch(0.85 0.20 142);
+  --neon-glow: oklch(0.85 0.20 142 / 0.25);
+  --sidebar: oklch(0.17 0.006 240);
+  --sidebar-foreground: oklch(0.97 0.005 240);
+  --sidebar-primary: oklch(0.85 0.20 142);
+  --sidebar-primary-foreground: oklch(0.14 0.005 240);
+  --sidebar-accent: oklch(0.24 0.006 240);
+  --sidebar-accent-foreground: oklch(0.97 0.005 240);
+  --sidebar-border: oklch(0.26 0.006 240);
+  --sidebar-ring: oklch(0.85 0.20 142);
 }
 
 .dark {
-  --background: oklch(0.16 0.005 240);
-  --foreground: oklch(0.96 0.005 240);
+  --background: oklch(0.155 0.005 240);
+  --foreground: oklch(0.97 0.005 240);
 }
 
 @layer base {
@@ -79,29 +80,62 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
+    font-feature-settings: "cv11", "ss01";
+    -webkit-font-smoothing: antialiased;
   }
   * { border-color: var(--color-border); }
-  h1, h2, h3 { font-family: var(--font-display); letter-spacing: 0.02em; }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    font-weight: 700;
+  }
+  ::selection { background: var(--neon); color: var(--primary-foreground); }
 }
 
+/* Softer neon utilities — premium feel, not glowing arcade */
 @utility neon-text {
   color: var(--neon);
-  text-shadow: 0 0 18px var(--neon-glow);
 }
 @utility neon-border {
   border-color: var(--neon);
-  box-shadow: 0 0 0 1px var(--neon-glow), 0 0 24px -4px var(--neon-glow);
+  box-shadow: 0 0 0 1px var(--neon-glow);
 }
 @utility neon-btn {
   background: var(--neon);
   color: var(--primary-foreground);
-  box-shadow: 0 0 24px -4px var(--neon-glow);
-  transition: transform .15s ease, box-shadow .2s ease;
-  &:hover { box-shadow: 0 0 32px -2px var(--neon-glow); transform: translateY(-1px); }
+  font-weight: 600;
+  transition: transform .15s ease, box-shadow .2s ease, background .2s ease;
+  &:hover {
+    box-shadow: 0 8px 24px -8px var(--neon-glow);
+    transform: translateY(-1px);
+  }
+  &:active { transform: translateY(0); }
 }
 @utility dumbbell-bg {
   background-image:
-    radial-gradient(circle at 20% 30%, oklch(0.86 0.22 140 / 0.06) 0%, transparent 40%),
-    radial-gradient(circle at 80% 70%, oklch(0.86 0.22 140 / 0.05) 0%, transparent 45%),
-    linear-gradient(180deg, oklch(0.16 0.005 240) 0%, oklch(0.13 0.005 240) 100%);
+    radial-gradient(ellipse 80% 60% at 50% 0%, oklch(0.85 0.20 142 / 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 100% 100%, oklch(0.85 0.20 142 / 0.04) 0%, transparent 70%),
+    linear-gradient(180deg, oklch(0.155 0.005 240) 0%, oklch(0.13 0.005 240) 100%);
+}
+@utility grid-pattern {
+  background-image:
+    linear-gradient(oklch(0.26 0.006 240 / 0.5) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(0.26 0.006 240 / 0.5) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 70% 50% at 50% 50%, black 30%, transparent 90%);
+}
+@utility card-hover {
+  transition: transform .2s ease, border-color .2s ease, background .2s ease;
+  &:hover {
+    transform: translateY(-2px);
+    border-color: oklch(0.85 0.20 142 / 0.4);
+  }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@utility animate-fade-up {
+  animation: fade-up .5s ease-out both;
 }
