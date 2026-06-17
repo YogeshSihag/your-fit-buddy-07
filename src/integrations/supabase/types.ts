@@ -20,6 +20,8 @@ export type Database = {
           exercise_name: string
           feedback: string | null
           id: string
+          indicator: string | null
+          mistakes: Json | null
           score: number
           user_id: string
         }
@@ -28,6 +30,8 @@ export type Database = {
           exercise_name: string
           feedback?: string | null
           id?: string
+          indicator?: string | null
+          mistakes?: Json | null
           score: number
           user_id: string
         }
@@ -36,6 +40,8 @@ export type Database = {
           exercise_name?: string
           feedback?: string | null
           id?: string
+          indicator?: string | null
+          mistakes?: Json | null
           score?: number
           user_id?: string
         }
@@ -88,6 +94,7 @@ export type Database = {
           reps: number | null
           sets: number | null
           user_id: string
+          weight_kg: number | null
         }
         Insert: {
           created_at?: string
@@ -99,6 +106,7 @@ export type Database = {
           reps?: number | null
           sets?: number | null
           user_id: string
+          weight_kg?: number | null
         }
         Update: {
           created_at?: string
@@ -110,6 +118,7 @@ export type Database = {
           reps?: number | null
           sets?: number | null
           user_id?: string
+          weight_kg?: number | null
         }
         Relationships: []
       }
