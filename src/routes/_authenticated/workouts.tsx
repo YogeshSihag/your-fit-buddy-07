@@ -13,6 +13,7 @@ export const Route = createFileRoute("/_authenticated/workouts")({
 
 function WorkoutsPage() {
   const [active, setActive] = useState<MuscleGroup>("Chest");
+  const [weights, setWeights] = useState<Record<string, string>>({});
   const qc = useQueryClient();
 
   const { data: history } = useQuery({
@@ -28,21 +29,26 @@ function WorkoutsPage() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
     const repsNum = parseInt(ex.reps) || 0;
+    const weightStr = weights[ex.name];
+    const weightNum = weightStr ? parseFloat(weightStr) : null;
     const { error } = await supabase.from("workouts").insert({
       user_id: user.id,
       muscle_group: active,
       exercise_name: ex.name,
       sets: ex.sets,
       reps: repsNum,
+      weight_kg: weightNum && weightNum > 0 ? weightNum : null,
+      duration_min: Math.round(ex.sets * 0.75),
     });
     if (error) {
       console.error("Workout insert error:", error);
       toast.error("Failed to log workout. Please try again.");
     } else {
-      toast.success(`Logged ${ex.name}`);
+      toast.success(`Logged ${ex.name}${weightNum ? ` @ ${weightNum}kg` : ""}`);
       qc.invalidateQueries({ queryKey: ["workouts-all"] });
       qc.invalidateQueries({ queryKey: ["workouts-recent"] });
       qc.invalidateQueries({ queryKey: ["workouts-count"] });
+      qc.invalidateQueries({ queryKey: ["workouts-analytics"] });
     }
   };
 
@@ -50,7 +56,7 @@ function WorkoutsPage() {
     <div className="space-y-6">
       <div>
         <h1 className="font-display text-4xl tracking-wider">WORKOUTS</h1>
-        <p className="text-sm text-muted-foreground">Pick a muscle group and log your sets.</p>
+        <p className="text-sm text-muted-foreground">Pick a muscle group, add weight (optional), and log your sets.</p>
       </div>
 
       <div className="flex flex-wrap gap-2">
@@ -75,9 +81,22 @@ function WorkoutsPage() {
             <h3 className="font-display text-xl tracking-wide">{ex.name}</h3>
             <p className="mt-1 text-neon">{ex.sets} sets × {ex.reps} reps</p>
             <p className="mt-2 text-sm text-muted-foreground">{ex.tip}</p>
+            <div className="mt-3 flex items-center gap-2">
+              <input
+                type="number"
+                inputMode="decimal"
+                min="0"
+                step="0.5"
+                placeholder="Weight kg"
+                value={weights[ex.name] ?? ""}
+                onChange={(e) => setWeights((w) => ({ ...w, [ex.name]: e.target.value }))}
+                className="w-24 rounded-md border border-input bg-background px-3 py-2 text-sm"
+              />
+              <span className="text-xs text-muted-foreground">optional</span>
+            </div>
             <button
               onClick={() => logWorkout(ex)}
-              className="neon-btn mt-4 flex w-full items-center justify-center gap-1 rounded-md py-2 text-sm font-display tracking-wider"
+              className="neon-btn mt-3 flex w-full items-center justify-center gap-1 rounded-md py-2 text-sm font-display tracking-wider"
             >
               <Plus className="h-4 w-4" /> LOG WORKOUT
             </button>
@@ -97,7 +116,9 @@ function WorkoutsPage() {
                     {w.muscle_group} • {new Date(w.created_at).toLocaleString()}
                   </p>
                 </div>
-                <span className="text-sm text-neon">{w.sets}×{w.reps}</span>
+                <span className="text-sm text-neon">
+                  {w.sets}×{w.reps}{w.weight_kg ? ` @ ${w.weight_kg}kg` : ""}
+                </span>
               </div>
             ))}
           </div>
