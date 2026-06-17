@@ -13,14 +13,17 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "AI fitness coach that analyzes your form through the camera, recommends exercises by muscle group, and tracks your progress.",
+          "AI fitness coach that analyzes your form through the camera, recommends exercises by muscle group, and tracks your progress over time.",
       },
-      { property: "og:title", content: "Your Fitness Friend — AI Form Coach" },
+      { property: "og:title", content: "Your Fitness Friend — AI Form Coach & Workout Tracker" },
       {
         property: "og:description",
         content: "Camera-based form analysis, 150+ exercises, and progress analytics in one premium app.",
       },
+      { property: "og:url", content: "https://your-fit-buddy-07.lovable.app/" },
+      { property: "og:type", content: "website" },
     ],
+    links: [{ rel: "canonical", href: "https://your-fit-buddy-07.lovable.app/" }],
   }),
   component: Landing,
 });

@@ -9,8 +9,20 @@ export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
       { title: "Sign In — Your Fitness Friend" },
-      { name: "description", content: "Sign in or create an account to start training." },
+      {
+        name: "description",
+        content:
+          "Sign in or create your free Your Fitness Friend account to start AI-powered form analysis, exercise tracking, and progress analytics.",
+      },
+      { property: "og:title", content: "Sign In — Your Fitness Friend" },
+      {
+        property: "og:description",
+        content:
+          "Sign in or sign up to access AI form analysis, 150+ exercises, and personal progress tracking.",
+      },
+      { property: "og:url", content: "https://your-fit-buddy-07.lovable.app/auth" },
     ],
+    links: [{ rel: "canonical", href: "https://your-fit-buddy-07.lovable.app/auth" }],
   }),
   component: AuthPage,
 });
@@ -77,9 +89,12 @@ function AuthPage() {
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
           <Dumbbell className="mx-auto mb-3 h-10 w-10 text-neon" />
-          <h1 className="font-display text-3xl tracking-wider">
-            YOUR FITNESS <span className="neon-text">FRIEND</span>
+          <h1 className="font-display text-2xl tracking-wider">
+            SIGN IN TO YOUR FITNESS <span className="neon-text">FRIEND</span>
           </h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Access AI form analysis, workouts, and progress tracking.
+          </p>
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-6 shadow-2xl">
