@@ -84,9 +84,8 @@ function AnalyzePage() {
     setFacing(getStoredFacing());
     if (typeof navigator !== "undefined" && "permissions" in navigator) {
       navigator.permissions
-        // @ts-expect-error - camera is a valid PermissionName in browsers
-        ?.query({ name: "camera" })
-        .then((p: PermissionStatus) => setPermissionState(p.state as any))
+        ?.query({ name: "camera" as PermissionName })
+        .then((p) => setPermissionState(p.state as typeof permissionState))
         .catch(() => setPermissionState("unknown"));
     }
   }, []);
