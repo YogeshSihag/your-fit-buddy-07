@@ -1,6 +1,6 @@
 import { Link, useRouter } from "@tanstack/react-router";
 import {
-  Dumbbell, LayoutDashboard, Activity, Camera, LineChart, BarChart3, BookOpen, LogOut, Menu, X,
+  Dumbbell, LayoutDashboard, Activity, Camera, LineChart, BarChart3, BookOpen, Trophy, LogOut, Menu, X,
 } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -8,15 +8,22 @@ import { cn } from "@/lib/utils";
 
 const links = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/exercises", label: "Exercises", icon: BookOpen },
   { to: "/workouts", label: "Workouts", icon: Activity },
+  { to: "/exercises", label: "Exercises", icon: BookOpen },
+  { to: "/records", label: "Records", icon: Trophy },
   { to: "/analyze", label: "Coach", icon: Camera },
   { to: "/analytics", label: "Analytics", icon: BarChart3 },
   { to: "/progress", label: "Progress", icon: LineChart },
 ];
 
 // Bottom nav: 5 most-used
-const mobileLinks = links.filter((l) => l.to !== "/analytics");
+const mobileLinks = [
+  { to: "/dashboard", label: "Home", icon: LayoutDashboard },
+  { to: "/workouts", label: "Workouts", icon: Activity },
+  { to: "/analyze", label: "Coach", icon: Camera },
+  { to: "/records", label: "Records", icon: Trophy },
+  { to: "/exercises", label: "Library", icon: BookOpen },
+];
 
 export function AppNav() {
   const router = useRouter();
