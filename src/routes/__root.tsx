@@ -88,6 +88,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:description", content: "AI Fitness Coach analyzes workout form via camera, recommends exercises, and tracks user progress." },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/67913da4-8051-4f85-9ccd-764d36ecbd28/id-preview-24b3b1e2--40635e85-8a52-4633-a160-371a7827d4fe.lovable.app-1781606936445.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/67913da4-8051-4f85-9ccd-764d36ecbd28/id-preview-24b3b1e2--40635e85-8a52-4633-a160-371a7827d4fe.lovable.app-1781606936445.png" },
+      { name: "google-site-verification", content: "f0f-i2iHfLzR4fUskou-KA6k_aA54pcCWyJRU3u4qAQ" },
     ],
     links: [
       {
