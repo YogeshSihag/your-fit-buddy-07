@@ -77,7 +77,7 @@ function TrustPage() {
           <section>
             <div className="flex items-center gap-3">
               <div className="grid h-9 w-9 place-items-center rounded-lg bg-neon/10 ring-1 ring-neon/20">
-                <Lock className="h-4.5 w-4.5 text-neon" />
+                <Lock className="h-5 w-5 text-neon" />
               </div>
               <h2 className="text-lg font-semibold tracking-tight">Access &amp; Authentication</h2>
             </div>
@@ -98,7 +98,7 @@ function TrustPage() {
           <section>
             <div className="flex items-center gap-3">
               <div className="grid h-9 w-9 place-items-center rounded-lg bg-neon/10 ring-1 ring-neon/20">
-                <Server className="h-4.5 w-4.5 text-neon" />
+                <Server className="h-5 w-5 text-neon" />
               </div>
               <h2 className="text-lg font-semibold tracking-tight">Platform &amp; Hosting</h2>
             </div>
@@ -119,7 +119,7 @@ function TrustPage() {
           <section>
             <div className="flex items-center gap-3">
               <div className="grid h-9 w-9 place-items-center rounded-lg bg-neon/10 ring-1 ring-neon/20">
-                <Eye className="h-4.5 w-4.5 text-neon" />
+                <Eye className="h-5 w-5 text-neon" />
               </div>
               <h2 className="text-lg font-semibold tracking-tight">Data Collection &amp; Use</h2>
             </div>
@@ -140,7 +140,7 @@ function TrustPage() {
           <section>
             <div className="flex items-center gap-3">
               <div className="grid h-9 w-9 place-items-center rounded-lg bg-neon/10 ring-1 ring-neon/20">
-                <Server className="h-4.5 w-4.5 text-neon" />
+                <Server className="h-5 w-5 text-neon" />
               </div>
               <h2 className="text-lg font-semibold tracking-tight">Subprocessors &amp; Integrations</h2>
             </div>
@@ -161,7 +161,7 @@ function TrustPage() {
           <section>
             <div className="flex items-center gap-3">
               <div className="grid h-9 w-9 place-items-center rounded-lg bg-neon/10 ring-1 ring-neon/20">
-                <Cookie className="h-4.5 w-4.5 text-neon" />
+                <Cookie className="h-5 w-5 text-neon" />
               </div>
               <h2 className="text-lg font-semibold tracking-tight">Cookies &amp; Analytics</h2>
             </div>
@@ -179,7 +179,7 @@ function TrustPage() {
           <section>
             <div className="flex items-center gap-3">
               <div className="grid h-9 w-9 place-items-center rounded-lg bg-neon/10 ring-1 ring-neon/20">
-                <Trash2 className="h-4.5 w-4.5 text-neon" />
+                <Trash2 className="h-5 w-5 text-neon" />
               </div>
               <h2 className="text-lg font-semibold tracking-tight">Retention &amp; Deletion</h2>
             </div>
@@ -197,7 +197,7 @@ function TrustPage() {
           <section>
             <div className="flex items-center gap-3">
               <div className="grid h-9 w-9 place-items-center rounded-lg bg-neon/10 ring-1 ring-neon/20">
-                <FileText className="h-4.5 w-4.5 text-neon" />
+                <FileText className="h-5 w-5 text-neon" />
               </div>
               <h2 className="text-lg font-semibold tracking-tight">Privacy Requests</h2>
             </div>
@@ -210,7 +210,7 @@ function TrustPage() {
           <section>
             <div className="flex items-center gap-3">
               <div className="grid h-9 w-9 place-items-center rounded-lg bg-neon/10 ring-1 ring-neon/20">
-                <Mail className="h-4.5 w-4.5 text-neon" />
+                <Mail className="h-5 w-5 text-neon" />
               </div>
               <h2 className="text-lg font-semibold tracking-tight">Incident &amp; Security Contact</h2>
             </div>
@@ -223,7 +223,7 @@ function TrustPage() {
           <section>
             <div className="flex items-center gap-3">
               <div className="grid h-9 w-9 place-items-center rounded-lg bg-neon/10 ring-1 ring-neon/20">
-                <Bug className="h-4.5 w-4.5 text-neon" />
+                <Bug className="h-5 w-5 text-neon" />
               </div>
               <h2 className="text-lg font-semibold tracking-tight">Vulnerability Reporting</h2>
             </div>
