@@ -18,6 +18,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedWorkoutsRouteImport } from './routes/_authenticated/workouts'
 import { Route as AuthenticatedRecordsRouteImport } from './routes/_authenticated/records'
 import { Route as AuthenticatedProgressRouteImport } from './routes/_authenticated/progress'
+import { Route as AuthenticatedNutritionRouteImport } from './routes/_authenticated/nutrition'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedAnalyzeRouteImport } from './routes/_authenticated/analyze'
 import { Route as AuthenticatedAnalyticsRouteImport } from './routes/_authenticated/analytics'
@@ -67,6 +68,11 @@ const AuthenticatedProgressRoute = AuthenticatedProgressRouteImport.update({
   path: '/progress',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedNutritionRoute = AuthenticatedNutritionRouteImport.update({
+  id: '/nutrition',
+  path: '/nutrition',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -98,6 +104,7 @@ export interface FileRoutesByFullPath {
   '/analytics': typeof AuthenticatedAnalyticsRoute
   '/analyze': typeof AuthenticatedAnalyzeRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/nutrition': typeof AuthenticatedNutritionRoute
   '/progress': typeof AuthenticatedProgressRoute
   '/records': typeof AuthenticatedRecordsRoute
   '/workouts': typeof AuthenticatedWorkoutsRoute
@@ -112,6 +119,7 @@ export interface FileRoutesByTo {
   '/analytics': typeof AuthenticatedAnalyticsRoute
   '/analyze': typeof AuthenticatedAnalyzeRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/nutrition': typeof AuthenticatedNutritionRoute
   '/progress': typeof AuthenticatedProgressRoute
   '/records': typeof AuthenticatedRecordsRoute
   '/workouts': typeof AuthenticatedWorkoutsRoute
@@ -128,6 +136,7 @@ export interface FileRoutesById {
   '/_authenticated/analytics': typeof AuthenticatedAnalyticsRoute
   '/_authenticated/analyze': typeof AuthenticatedAnalyzeRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/nutrition': typeof AuthenticatedNutritionRoute
   '/_authenticated/progress': typeof AuthenticatedProgressRoute
   '/_authenticated/records': typeof AuthenticatedRecordsRoute
   '/_authenticated/workouts': typeof AuthenticatedWorkoutsRoute
@@ -144,6 +153,7 @@ export interface FileRouteTypes {
     | '/analytics'
     | '/analyze'
     | '/dashboard'
+    | '/nutrition'
     | '/progress'
     | '/records'
     | '/workouts'
@@ -158,6 +168,7 @@ export interface FileRouteTypes {
     | '/analytics'
     | '/analyze'
     | '/dashboard'
+    | '/nutrition'
     | '/progress'
     | '/records'
     | '/workouts'
@@ -173,6 +184,7 @@ export interface FileRouteTypes {
     | '/_authenticated/analytics'
     | '/_authenticated/analyze'
     | '/_authenticated/dashboard'
+    | '/_authenticated/nutrition'
     | '/_authenticated/progress'
     | '/_authenticated/records'
     | '/_authenticated/workouts'
@@ -253,6 +265,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProgressRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/nutrition': {
+      id: '/_authenticated/nutrition'
+      path: '/nutrition'
+      fullPath: '/nutrition'
+      preLoaderRoute: typeof AuthenticatedNutritionRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -288,6 +307,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAnalyticsRoute: typeof AuthenticatedAnalyticsRoute
   AuthenticatedAnalyzeRoute: typeof AuthenticatedAnalyzeRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedNutritionRoute: typeof AuthenticatedNutritionRoute
   AuthenticatedProgressRoute: typeof AuthenticatedProgressRoute
   AuthenticatedRecordsRoute: typeof AuthenticatedRecordsRoute
   AuthenticatedWorkoutsRoute: typeof AuthenticatedWorkoutsRoute
@@ -298,6 +318,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAnalyticsRoute: AuthenticatedAnalyticsRoute,
   AuthenticatedAnalyzeRoute: AuthenticatedAnalyzeRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedNutritionRoute: AuthenticatedNutritionRoute,
   AuthenticatedProgressRoute: AuthenticatedProgressRoute,
   AuthenticatedRecordsRoute: AuthenticatedRecordsRoute,
   AuthenticatedWorkoutsRoute: AuthenticatedWorkoutsRoute,
