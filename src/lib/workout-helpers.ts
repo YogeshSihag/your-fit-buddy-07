@@ -182,16 +182,22 @@ export async function fetchPreviousSets(opts: {
     .map(({ weight_kg, reps, set_index, created_at }) => ({ weight_kg, reps, set_index, created_at }));
 }
 
-export async function endSession(sessionId: string): Promise<{
+export interface SessionSummary {
   durationSec: number;
   exercises: number;
   totalSets: number;
   totalReps: number;
   totalVolume: number;
-}> {
+  avgFormScore: number | null;
+  caloriesBurned: number;
+  isStrongestThisWeek: boolean;
+  formImprovedVsPrevious: boolean;
+}
+
+export async function endSession(sessionId: string): Promise<SessionSummary> {
   const { data: session } = await supabase
     .from("workout_sessions")
-    .select("started_at")
+    .select("started_at, user_id")
     .eq("id", sessionId)
     .single();
   const started = session?.started_at ? new Date(session.started_at).getTime() : Date.now();
@@ -203,7 +209,6 @@ export async function endSession(sessionId: string): Promise<{
     .update({ ended_at: endedAt.toISOString(), duration_sec: durationSec })
     .eq("id", sessionId);
 
-  // Summary stats from completed sets
   const { data: sets } = await supabase
     .from("workout_sets")
     .select("exercise_name, weight_kg, reps, completed")
@@ -214,8 +219,70 @@ export async function endSession(sessionId: string): Promise<{
   const totalReps = completed.reduce((a, s) => a + (s.reps ?? 0), 0);
   const totalVolume = completed.reduce((a, s) => a + (s.reps ?? 0) * (Number(s.weight_kg) || 0), 0);
 
-  // Mirror into legacy workouts table for backwards compatibility (analytics/dashboard)
   const { data: { user } } = await supabase.auth.getUser();
+
+  let bw = 70;
+  if (user) {
+    const { data: profile } = await supabase
+      .from("profiles").select("weight_kg").eq("id", user.id).maybeSingle();
+    if (profile?.weight_kg) bw = Number(profile.weight_kg);
+  }
+  const minutes = Math.max(1, durationSec / 60);
+  const caloriesBurned = Math.round((6 * 3.5 * bw / 200) * minutes);
+
+  let avgFormScore: number | null = null;
+  if (user) {
+    const { data: scoresIn } = await supabase
+      .from("form_scores").select("score")
+      .eq("user_id", user.id)
+      .gte("created_at", new Date(started).toISOString())
+      .lte("created_at", endedAt.toISOString());
+    if (scoresIn && scoresIn.length > 0) {
+      avgFormScore = Math.round(scoresIn.reduce((a, s) => a + (s.score ?? 0), 0) / scoresIn.length);
+    }
+  }
+
+  let isStrongestThisWeek = false;
+  let formImprovedVsPrevious = false;
+  if (user) {
+    const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString();
+    const { data: weekSessions } = await supabase
+      .from("workout_sessions").select("id")
+      .eq("user_id", user.id).gte("ended_at", weekAgo).neq("id", sessionId);
+    if (weekSessions && weekSessions.length > 0) {
+      const ids = weekSessions.map((s) => s.id);
+      const { data: weekSets } = await supabase
+        .from("workout_sets").select("session_id, weight_kg, reps")
+        .in("session_id", ids).eq("completed", true);
+      const byS = new Map<string, number>();
+      for (const s of weekSets ?? []) {
+        byS.set(s.session_id, (byS.get(s.session_id) ?? 0) + (s.reps ?? 0) * (Number(s.weight_kg) || 0));
+      }
+      const maxOther = Math.max(0, ...Array.from(byS.values()));
+      isStrongestThisWeek = totalVolume > maxOther && totalVolume > 0;
+    } else {
+      isStrongestThisWeek = totalVolume > 0;
+    }
+
+    if (avgFormScore != null) {
+      const prev = (await supabase
+        .from("workout_sessions").select("started_at, ended_at")
+        .eq("user_id", user.id)
+        .lt("ended_at", new Date(started).toISOString())
+        .order("ended_at", { ascending: false }).limit(1)).data?.[0];
+      if (prev?.started_at && prev?.ended_at) {
+        const { data: prevScores } = await supabase
+          .from("form_scores").select("score")
+          .eq("user_id", user.id)
+          .gte("created_at", prev.started_at).lte("created_at", prev.ended_at);
+        if (prevScores && prevScores.length > 0) {
+          const prevAvg = prevScores.reduce((a, s) => a + (s.score ?? 0), 0) / prevScores.length;
+          formImprovedVsPrevious = avgFormScore > prevAvg;
+        }
+      }
+    }
+  }
+
   if (user) {
     const byExercise = new Map<string, { reps: number; weight: number; sets: number; muscle: string }>();
     for (const s of completed) {
@@ -240,7 +307,10 @@ export async function endSession(sessionId: string): Promise<{
     }
   }
 
-  return { durationSec, exercises, totalSets, totalReps, totalVolume };
+  return {
+    durationSec, exercises, totalSets, totalReps, totalVolume,
+    avgFormScore, caloriesBurned, isStrongestThisWeek, formImprovedVsPrevious,
+  };
 }
 
 /** YouTube search URL for an exercise demo. */
