@@ -463,7 +463,7 @@ function prLabel(p: NewPR) {
 
 function SummaryModal({
   summary, sessionId, onClose,
-}: { summary: { durationSec: number; exercises: number; totalSets: number; totalReps: number; totalVolume: number }; sessionId: string; onClose: () => void }) {
+}: { summary: Awaited<ReturnType<typeof endSession>>; sessionId: string; onClose: () => void }) {
   const { data: prs } = useQuery({
     queryKey: ["session-prs", sessionId],
     queryFn: async () => {
@@ -471,19 +471,38 @@ function SummaryModal({
       return data ?? [];
     },
   });
-  const { data: avgScore } = useQuery({
-    queryKey: ["recent-form-avg"],
+  const { data: weakSpots } = useQuery({
+    queryKey: ["session-weak-spots", sessionId],
     queryFn: async () => {
-      const { data } = await supabase.from("form_scores").select("score").order("created_at", { ascending: false }).limit(10);
-      if (!data?.length) return null;
-      return Math.round(data.reduce((a, s) => a + (s.score ?? 0), 0) / data.length);
+      const { data: sess } = await supabase
+        .from("workout_sessions").select("started_at, ended_at").eq("id", sessionId).single();
+      if (!sess?.started_at) return [] as { exercise_name: string; cue: string }[];
+      const { data: scores } = await supabase
+        .from("form_scores")
+        .select("exercise_name, score, mistakes")
+        .gte("created_at", sess.started_at)
+        .lte("created_at", sess.ended_at ?? new Date().toISOString());
+      const weak: { exercise_name: string; cue: string }[] = [];
+      for (const s of scores ?? []) {
+        if ((s.score ?? 100) < 70 && Array.isArray(s.mistakes) && s.mistakes.length > 0) {
+          const m: any = s.mistakes[0];
+          weak.push({ exercise_name: s.exercise_name, cue: m?.cue ?? "Review form" });
+        }
+      }
+      return weak.slice(0, 3);
     },
   });
+
   const min = Math.floor(summary.durationSec / 60);
   const sec = summary.durationSec % 60;
+  const motivational: string[] = [];
+  if (prs && prs.length > 0) motivational.push(`🏆 ${prs.length} new personal record${prs.length > 1 ? "s" : ""}!`);
+  if (summary.isStrongestThisWeek && summary.totalVolume > 0) motivational.push("💪 Strongest workout this week.");
+  if (summary.formImprovedVsPrevious) motivational.push("📈 Form improved vs previous session.");
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm" onClick={onClose}>
-      <div className="w-full max-w-md rounded-2xl border border-neon/40 bg-card p-6 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+      <div className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl border border-neon/40 bg-card p-6 shadow-2xl" onClick={(e) => e.stopPropagation()}>
         <div className="text-center">
           <div className="mx-auto grid h-14 w-14 place-items-center rounded-xl bg-neon/15 ring-1 ring-neon/40">
             <Trophy className="h-7 w-7 text-neon" />
@@ -491,17 +510,29 @@ function SummaryModal({
           <h2 className="mt-3 text-2xl font-bold">Workout complete</h2>
           <p className="text-sm text-muted-foreground">Nice work — here's how you did.</p>
         </div>
-        <div className="mt-5 grid grid-cols-2 gap-2 text-center">
+
+        {motivational.length > 0 && (
+          <div className="mt-4 space-y-1.5">
+            {motivational.map((m, i) => (
+              <div key={i} className="rounded-lg border border-neon/40 bg-neon/10 px-3 py-2 text-center text-sm font-medium text-neon">{m}</div>
+            ))}
+          </div>
+        )}
+
+        <div className="mt-4 grid grid-cols-2 gap-2 text-center">
           <SummaryStat label="Duration" value={`${min}:${sec.toString().padStart(2, "0")}`} />
           <SummaryStat label="Exercises" value={String(summary.exercises)} />
           <SummaryStat label="Sets" value={String(summary.totalSets)} />
           <SummaryStat label="Reps" value={String(summary.totalReps)} />
           <SummaryStat label="Volume" value={`${Math.round(summary.totalVolume)} kg`} />
-          <SummaryStat label="Avg form" value={avgScore != null ? String(avgScore) : "—"} />
+          <SummaryStat label="Calories" value={`${summary.caloriesBurned}`} />
+          <SummaryStat label="Avg form" value={summary.avgFormScore != null ? `${summary.avgFormScore}/100` : "—"} />
+          <SummaryStat label="PRs" value={String(prs?.length ?? 0)} />
         </div>
+
         {prs && prs.length > 0 && (
           <div className="mt-4 rounded-xl border border-neon/40 bg-neon/5 p-3">
-            <p className="text-xs font-medium uppercase tracking-widest text-neon">{prs.length} new PR{prs.length > 1 ? "s" : ""}</p>
+            <p className="text-xs font-medium uppercase tracking-widest text-neon">New PRs</p>
             <ul className="mt-1 space-y-1 text-sm">
               {prs.slice(0, 5).map((p: any) => (
                 <li key={p.id}>🏆 {p.exercise_name} — {prLabel(p as NewPR)}</li>
@@ -509,6 +540,16 @@ function SummaryModal({
             </ul>
           </div>
         )}
+
+        {weakSpots && weakSpots.length > 0 && (
+          <div className="mt-3 rounded-xl border border-amber-500/40 bg-amber-500/10 p-3">
+            <p className="text-xs font-medium uppercase tracking-widest text-amber-300">Areas to improve</p>
+            <ul className="mt-1 space-y-1 text-sm text-amber-100">
+              {weakSpots.map((w, i) => (<li key={i}>• {w.exercise_name}: {w.cue}</li>))}
+            </ul>
+          </div>
+        )}
+
         <button onClick={onClose} className="neon-btn mt-5 w-full rounded-md py-2.5 text-sm">Done</button>
       </div>
     </div>

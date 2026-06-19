@@ -47,6 +47,84 @@ export type Database = {
         }
         Relationships: []
       }
+      nutrition_entries: {
+        Row: {
+          calories: number
+          carbs_g: number
+          created_at: string
+          fat_g: number
+          food_name: string
+          id: string
+          logged_on: string
+          meal: Database["public"]["Enums"]["meal_type"]
+          protein_g: number
+          quantity: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          calories?: number
+          carbs_g?: number
+          created_at?: string
+          fat_g?: number
+          food_name: string
+          id?: string
+          logged_on?: string
+          meal: Database["public"]["Enums"]["meal_type"]
+          protein_g?: number
+          quantity?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          calories?: number
+          carbs_g?: number
+          created_at?: string
+          fat_g?: number
+          food_name?: string
+          id?: string
+          logged_on?: string
+          meal?: Database["public"]["Enums"]["meal_type"]
+          protein_g?: number
+          quantity?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      nutrition_goals: {
+        Row: {
+          carbs_g: number
+          created_at: string
+          daily_calories: number
+          fat_g: number
+          goal_type: Database["public"]["Enums"]["nutrition_goal_type"]
+          protein_g: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          carbs_g?: number
+          created_at?: string
+          daily_calories?: number
+          fat_g?: number
+          goal_type?: Database["public"]["Enums"]["nutrition_goal_type"]
+          protein_g?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          carbs_g?: number
+          created_at?: string
+          daily_calories?: number
+          fat_g?: number
+          goal_type?: Database["public"]["Enums"]["nutrition_goal_type"]
+          protein_g?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       personal_records: {
         Row: {
           achieved_at: string
@@ -307,7 +385,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      meal_type: "breakfast" | "lunch" | "dinner" | "snack"
+      nutrition_goal_type: "weight_loss" | "muscle_gain" | "maintenance"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -434,6 +513,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      meal_type: ["breakfast", "lunch", "dinner", "snack"],
+      nutrition_goal_type: ["weight_loss", "muscle_gain", "maintenance"],
+    },
   },
 } as const
