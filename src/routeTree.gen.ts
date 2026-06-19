@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TrustRouteImport } from './routes/trust'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ExercisesRouteImport } from './routes/exercises'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -22,6 +23,11 @@ import { Route as AuthenticatedAnalyzeRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedAnalyticsRouteImport } from './routes/_authenticated/analytics'
 import { Route as AuthenticatedSessionSessionIdRouteImport } from './routes/_authenticated/session.$sessionId'
 
+const TrustRoute = TrustRouteImport.update({
+  id: '/trust',
+  path: '/trust',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -88,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/exercises': typeof ExercisesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/trust': typeof TrustRoute
   '/analytics': typeof AuthenticatedAnalyticsRoute
   '/analyze': typeof AuthenticatedAnalyzeRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -101,6 +108,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/exercises': typeof ExercisesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/trust': typeof TrustRoute
   '/analytics': typeof AuthenticatedAnalyticsRoute
   '/analyze': typeof AuthenticatedAnalyzeRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -116,6 +124,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/exercises': typeof ExercisesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/trust': typeof TrustRoute
   '/_authenticated/analytics': typeof AuthenticatedAnalyticsRoute
   '/_authenticated/analyze': typeof AuthenticatedAnalyzeRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
@@ -131,6 +140,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/exercises'
     | '/sitemap.xml'
+    | '/trust'
     | '/analytics'
     | '/analyze'
     | '/dashboard'
@@ -144,6 +154,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/exercises'
     | '/sitemap.xml'
+    | '/trust'
     | '/analytics'
     | '/analyze'
     | '/dashboard'
@@ -158,6 +169,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/exercises'
     | '/sitemap.xml'
+    | '/trust'
     | '/_authenticated/analytics'
     | '/_authenticated/analyze'
     | '/_authenticated/dashboard'
@@ -173,10 +185,18 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   ExercisesRoute: typeof ExercisesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  TrustRoute: typeof TrustRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/trust': {
+      id: '/trust'
+      path: '/trust'
+      fullPath: '/trust'
+      preLoaderRoute: typeof TrustRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -293,6 +313,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   ExercisesRoute: ExercisesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  TrustRoute: TrustRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -279,7 +279,12 @@ function Landing() {
             <Dumbbell className="h-4 w-4 text-neon" />
             <span>Your Fitness Friend</span>
           </div>
-          <p>© {new Date().getFullYear()} Your Fitness Friend. Train smart.</p>
+          <div className="flex items-center gap-4">
+            <Link to="/trust" className="hover:text-foreground transition-colors">
+              Trust &amp; Privacy
+            </Link>
+            <span>© {new Date().getFullYear()} Your Fitness Friend. Train smart.</span>
+          </div>
         </div>
       </footer>
     </div>
