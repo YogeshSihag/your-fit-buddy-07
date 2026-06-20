@@ -66,6 +66,7 @@ function NutritionPage() {
   const qc = useQueryClient();
   const [date, setDate] = useState<string>(today());
   const [showGoals, setShowGoals] = useState(false);
+  const [showAnalyzer, setShowAnalyzer] = useState(false);
 
   const { data: goals } = useQuery({
     queryKey: ["nutrition-goals"],
