@@ -149,11 +149,17 @@ function NutritionPage() {
           </h1>
           <p className="text-sm text-muted-foreground">Track meals, macros, and your daily calorie goal.</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <input
             type="date" value={date} onChange={(e) => setDate(e.target.value)}
             className="rounded-md border border-input bg-card px-3 py-2 text-sm"
           />
+          <button
+            onClick={() => setShowAnalyzer(true)}
+            className="inline-flex items-center gap-1.5 rounded-md border border-neon/40 bg-neon/10 px-3 py-2 text-sm font-medium text-neon hover:bg-neon/15"
+          >
+            <Sparkles className="h-4 w-4" /> Analyze meal
+          </button>
           <button
             onClick={() => setShowGoals(true)}
             className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3 py-2 text-sm text-muted-foreground hover:text-foreground"
