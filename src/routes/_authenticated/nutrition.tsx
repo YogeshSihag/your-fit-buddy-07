@@ -5,11 +5,12 @@ import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import {
   Apple, Coffee, Soup, UtensilsCrossed, Cookie, Plus, Trash2,
-  Flame, Target, TrendingUp, Settings as SettingsIcon,
+  Flame, Target, TrendingUp, Settings as SettingsIcon, Sparkles,
 } from "lucide-react";
 import {
   ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid,
 } from "recharts";
+import { FoodAnalyzer } from "@/components/FoodAnalyzer";
 
 export const Route = createFileRoute("/_authenticated/nutrition")({
   head: () => ({
