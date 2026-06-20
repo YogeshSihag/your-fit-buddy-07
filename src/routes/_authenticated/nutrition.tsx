@@ -233,6 +233,16 @@ function NutritionPage() {
       </div>
 
       {showGoals && <GoalsModal current={goals} onClose={() => setShowGoals(false)} />}
+      <FoodAnalyzer
+        open={showAnalyzer}
+        date={date}
+        defaultMeal={pickDefaultMeal()}
+        onClose={() => setShowAnalyzer(false)}
+        onLogged={() => {
+          qc.invalidateQueries({ queryKey: ["nutrition-entries", date] });
+          qc.invalidateQueries({ queryKey: ["nutrition-week"] });
+        }}
+      />
     </div>
   );
 }
