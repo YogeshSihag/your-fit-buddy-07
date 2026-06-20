@@ -5,11 +5,12 @@ import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import {
   Apple, Coffee, Soup, UtensilsCrossed, Cookie, Plus, Trash2,
-  Flame, Target, TrendingUp, Settings as SettingsIcon,
+  Flame, Target, TrendingUp, Settings as SettingsIcon, Sparkles,
 } from "lucide-react";
 import {
   ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid,
 } from "recharts";
+import { FoodAnalyzer } from "@/components/FoodAnalyzer";
 
 export const Route = createFileRoute("/_authenticated/nutrition")({
   head: () => ({
@@ -61,10 +62,19 @@ const GOAL_PRESETS: Record<GoalType, Omit<Goals, "goal_type">> = {
 
 function today() { return new Date().toISOString().slice(0, 10); }
 
+function pickDefaultMeal(): Meal {
+  const h = new Date().getHours();
+  if (h < 11) return "breakfast";
+  if (h < 15) return "lunch";
+  if (h < 21) return "dinner";
+  return "snack";
+}
+
 function NutritionPage() {
   const qc = useQueryClient();
   const [date, setDate] = useState<string>(today());
   const [showGoals, setShowGoals] = useState(false);
+  const [showAnalyzer, setShowAnalyzer] = useState(false);
 
   const { data: goals } = useQuery({
     queryKey: ["nutrition-goals"],
@@ -147,11 +157,17 @@ function NutritionPage() {
           </h1>
           <p className="text-sm text-muted-foreground">Track meals, macros, and your daily calorie goal.</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <input
             type="date" value={date} onChange={(e) => setDate(e.target.value)}
             className="rounded-md border border-input bg-card px-3 py-2 text-sm"
           />
+          <button
+            onClick={() => setShowAnalyzer(true)}
+            className="inline-flex items-center gap-1.5 rounded-md border border-neon/40 bg-neon/10 px-3 py-2 text-sm font-medium text-neon hover:bg-neon/15"
+          >
+            <Sparkles className="h-4 w-4" /> Analyze meal
+          </button>
           <button
             onClick={() => setShowGoals(true)}
             className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3 py-2 text-sm text-muted-foreground hover:text-foreground"
@@ -225,6 +241,16 @@ function NutritionPage() {
       </div>
 
       {showGoals && <GoalsModal current={goals} onClose={() => setShowGoals(false)} />}
+      <FoodAnalyzer
+        open={showAnalyzer}
+        date={date}
+        defaultMeal={pickDefaultMeal()}
+        onClose={() => setShowAnalyzer(false)}
+        onLogged={() => {
+          qc.invalidateQueries({ queryKey: ["nutrition-entries", date] });
+          qc.invalidateQueries({ queryKey: ["nutrition-week"] });
+        }}
+      />
     </div>
   );
 }
