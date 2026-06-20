@@ -62,6 +62,14 @@ const GOAL_PRESETS: Record<GoalType, Omit<Goals, "goal_type">> = {
 
 function today() { return new Date().toISOString().slice(0, 10); }
 
+function pickDefaultMeal(): Meal {
+  const h = new Date().getHours();
+  if (h < 11) return "breakfast";
+  if (h < 15) return "lunch";
+  if (h < 21) return "dinner";
+  return "snack";
+}
+
 function NutritionPage() {
   const qc = useQueryClient();
   const [date, setDate] = useState<string>(today());
